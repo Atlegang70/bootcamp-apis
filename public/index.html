@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="totalphonebill.js"></script>
+</head>
+
+<style>
+    body {
+
+        background-color: lightgrey;
+
+        font-family: 'Courier New', Courier, monospace
+    }
+
+    .Airtime {
+
+        border: 1px solid;
+        margin-right: 14.5%;
+        padding-right: 5%;
+        margin-top: 2%;
+        border-radius: 1em;
+        background-color:rgb(238, 211, 144);
+    }
+
+    .phoneBill {
+
+        border-color: black;
+        border: 1px solid;
+        margin-right: 13.6%;
+        border-radius: 1em;
+        background-color: rgb(238, 211, 144);
+
+    }
+
+    .wordgame {
+        border: 1px solid;
+        padding-right: 10%;
+        margin-top: 2%;
+        border-radius: 1em;
+        background-color: rgb(238, 211, 144);
+    }
+</style>
+
+<body>
+
+
+
+    <div x-data="{
+        
+        bill: 0,
+        total: 0,
+        sentence : '',
+        longestword: '',
+        short: '',
+        wordlenth: '',
+        total: 0,
+        
+        checkSentence(){
+        axios
+        .get(`/api/word_game?sentence=${this.sentence}`)
+        .then( (result)=>{
+            this.longestword = result.data.longestWord;  
+            this.short = result.data.shortest; 
+            this.wordlenth = result.data.wordLengths; 
+         });
+    },
+    call:'', total2:0 , 
+    tot(){ 
+     this.total2 = totalPhoneBill(this.call);
+     
+     } 
+   
+
+    }">
+        <center><h2>My API widgets</h2></center>
+        <div class="wordgame">
+            
+
+            <h2>Word game</h2>
+            <textarea x-model="sentence" name="" id="" cols="40" rows="5"></textarea>
+            <div><button @click="checkSentence()">Analyze sentence</button></div>
+            <div>Longestword: <span x-text="longestword"></span></div>
+            <div>Shortestword: <span x-text="short"></span></div>
+            <div>wordLength: <span x-text="wordlenth"></span></div>
+
+
+        </div>
+
+
+
+        <div class="container1">
+            <div class="phoneBill" >
+                <h1>Total Phonebill</h1>
+                
+                <p> This Widget Calculates the <br> total bill for the given usage. </p>
+                <label for="phone">Enter Usage:</label><br>
+                <input type="text" id="phone" x-model="call"> <br>
+                <button @click="tot()">Check totalPhoneBill</button> <br>
+                <span>Total phone bill is: <div x-text="total2"></div></span>
+            </div>
+
+            <div class="Airtime">
+                <h1>Enough Airtime?</h1>
+                <p>this Widget calculates <br> if a user will have enough <br> airtime based on their <br> projected
+                    usage.
+                </p>
+                <label for="time">Enter Usage:</label><br>
+                <input type="text"> <br>
+
+                <label for="AirtimeAva">Used Airtime:</label><br>
+                <input type="number"> <br>
+                <button>Check available Airtime</button> <br>
+                Airtime available is: <b>
+                    <div>
+                    </div>
+                </b>
+            </div>
+
+        </div>
+
+</body>
+
+</html>
